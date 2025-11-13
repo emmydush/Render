@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import unittest
 import psycopg2
 from dotenv import load_dotenv
 
@@ -68,6 +69,8 @@ def setup_application():
     print("  python app.py")
     print("\nTo test the database connection separately:")
     print("  python test_db.py")
+    print("\nTo run tests:")
+    print("  python -m unittest test_app.py")
     print("\nAPI endpoints:")
     print("  GET  /          - Welcome message")
     print("  GET  /health     - Health check")
@@ -76,5 +79,20 @@ def setup_application():
     
     return True
 
+def test_suite():
+    """Run the test suite"""
+    loader = unittest.TestLoader()
+    start_dir = '.'
+    suite = loader.discover(start_dir, pattern='test_*.py')
+    
+    runner = unittest.TextTestRunner(verbosity=2)
+    result = runner.run(suite)
+    
+    return result.wasSuccessful()
+
 if __name__ == "__main__":
-    setup_application()
+    if len(sys.argv) > 1 and sys.argv[1] == 'test':
+        success = test_suite()
+        sys.exit(0 if success else 1)
+    else:
+        setup_application()
