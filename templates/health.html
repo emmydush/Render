@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Health Check</h2>
+
+<div class="card">
+    <div class="card-header">
+        <h5>Application Status</h5>
+    </div>
+    <div class="card-body">
+        <div id="healthStatus">
+            <p>Checking health status...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    checkHealth();
+});
+
+function checkHealth() {
+    $.get('/api/health')
+        .done(function(data) {
+            displayHealthStatus(data);
+        })
+        .fail(function() {
+            $('#healthStatus').html(`
+                <div class="alert alert-danger">
+                    <h5>Error</h5>
+                    <p>Unable to connect to the health check endpoint.</p>
+                </div>
+            `);
+        });
+}
+
+function displayHealthStatus(data) {
+    let statusClass = data.status === 'healthy' ? 'alert-success' : 'alert-danger';
+    let statusText = data.status === 'healthy' ? 'Healthy' : 'Unhealthy';
+    
+    let html = `
+        <div class="alert ${statusClass}">
+            <h5>Status: ${statusText}</h5>
+            <p>Database Connection: ${data.database || 'N/A'}</p>
+    `;
+    
+    if (data.db_version) {
+        html += `<p>Database Version: ${data.db_version}</p>`;
+    }
+    
+    if (data.error) {
+        html += `<p>Error: ${data.error}</p>`;
+    }
+    
+    html += '</div>';
+    
+    $('#healthStatus').html(html);
+}
+</script>
+{% endblock %}

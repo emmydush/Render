@@ -1,12 +1,12 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import psycopg2
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 # Database configuration
 DB_HOST = os.getenv('DB_HOST', 'localhost')
@@ -25,15 +25,29 @@ def get_db_connection():
     )
     return conn
 
+# Frontend routes
 @app.route('/')
 def home():
+    return render_template('index.html')
+
+@app.route('/users')
+def users_page():
+    return render_template('users.html')
+
+@app.route('/health')
+def health_page():
+    return render_template('health.html')
+
+# API routes
+@app.route('/api/')
+def api_home():
     return jsonify({
         "message": "Welcome to the Python PostgreSQL Web App",
         "status": "success"
     })
 
-@app.route('/health')
-def health_check():
+@app.route('/api/health')
+def api_health_check():
     try:
         conn = get_db_connection()
         cur = conn.cursor()
@@ -52,8 +66,8 @@ def health_check():
             "error": str(e)
         }), 500
 
-@app.route('/users', methods=['GET'])
-def get_users():
+@app.route('/api/users', methods=['GET'])
+def api_get_users():
     try:
         conn = get_db_connection()
         cur = conn.cursor()
@@ -79,8 +93,8 @@ def get_users():
             "error": str(e)
         }), 500
 
-@app.route('/users', methods=['POST'])
-def create_user():
+@app.route('/api/users', methods=['POST'])
+def api_create_user():
     try:
         data = request.get_json()
         name = data.get('name')

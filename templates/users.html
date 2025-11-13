@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>User Management</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Create New User</h5>
+            </div>
+            <div class="card-body">
+                <form id="userForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                </form>
+                <div id="createFormMessage" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>All Users</h5>
+            </div>
+            <div class="card-body">
+                <button id="refreshUsers" class="btn btn-secondary mb-3">Refresh Users</button>
+                <div id="usersList">
+                    <p>Loading users...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Load users on page load
+    loadUsers();
+    
+    // Refresh users button
+    $('#refreshUsers').click(function() {
+        loadUsers();
+    });
+    
+    // Handle form submission
+    $('#userForm').submit(function(e) {
+        e.preventDefault();
+        createUser();
+    });
+});
+
+function loadUsers() {
+    $.get('/api/users')
+        .done(function(data) {
+            displayUsers(data.users);
+        })
+        .fail(function() {
+            $('#usersList').html('<p class="text-danger">Error loading users</p>');
+        });
+}
+
+function displayUsers(users) {
+    if (users.length === 0) {
+        $('#usersList').html('<p>No users found</p>');
+        return;
+    }
+    
+    let html = '<ul class="list-group">';
+    users.forEach(function(user) {
+        html += `<li class="list-group-item">
+                    <strong>${user.name}</strong> (${user.email})
+                    <small class="text-muted">ID: ${user.id}</small>
+                </li>`;
+    });
+    html += '</ul>';
+    
+    $('#usersList').html(html);
+}
+
+function createUser() {
+    const name = $('#name').val();
+    const email = $('#email').val();
+    
+    $.post('/api/users', JSON.stringify({name: name, email: email}), function(data, status, xhr) {
+        if (xhr.status === 201) {
+            $('#createFormMessage').html('<div class="alert alert-success">User created successfully!</div>');
+            $('#userForm')[0].reset();
+            loadUsers(); // Refresh the users list
+        } else {
+            $('#createFormMessage').html(`<div class="alert alert-danger">Error: ${data.error}</div>`);
+        }
+    }).fail(function(xhr) {
+        const response = JSON.parse(xhr.responseText);
+        $('#createFormMessage').html(`<div class="alert alert-danger">Error: ${response.error}</div>`);
+    });
+}
+</script>
+{% endblock %}

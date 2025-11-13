@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to the Python PostgreSQL Web App</h1>
+    <p class="lead">A simple web application demonstrating Flask with PostgreSQL integration.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card feature-card h-100">
+            <div class="card-body">
+                <h5 class="card-title">User Management</h5>
+                <p class="card-text">Create and view users in the PostgreSQL database.</p>
+                <a href="/users" class="btn btn-primary">Manage Users</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card feature-card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Health Check</h5>
+                <p class="card-text">Check the status of the application and database connection.</p>
+                <a href="/health" class="btn btn-success">Check Health</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card feature-card h-100">
+            <div class="card-body">
+                <h5 class="card-title">API Documentation</h5>
+                <p class="card-text">Learn how to use the REST API endpoints.</p>
+                <a href="#" class="btn btn-info" onclick="showApiDocs()">View Docs</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="apiDocsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">API Documentation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Endpoints:</h6>
+                <ul>
+                    <li><strong>GET /</strong> - Welcome message</li>
+                    <li><strong>GET /health</strong> - Health check</li>
+                    <li><strong>GET /users</strong> - Get all users</li>
+                    <li><strong>POST /users</strong> - Create a new user</li>
+                </ul>
+                <h6>Example POST request:</h6>
+                <pre>
+{
+    "name": "John Doe",
+    "email": "john@example.com"
+}
+                </pre>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showApiDocs() {
+    var myModal = new bootstrap.Modal(document.getElementById('apiDocsModal'));
+    myModal.show();
+}
+</script>
+{% endblock %}
