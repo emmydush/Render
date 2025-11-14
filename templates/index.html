@@ -1,74 +1,72 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="jumbotron">
-    <h1 class="display-4">Welcome to the Python PostgreSQL Web App</h1>
-    <p class="lead">A simple web application demonstrating Flask with PostgreSQL integration.</p>
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Left Side - Login Form -->
+        <div class="col-md-6 d-flex align-items-center justify-content-center bg-white">
+            <div class="w-75">
+                <h1 class="fw-bold mb-4">Signin</h1>
+                
+                <!-- Login Form -->
+                <form>
+                    <div class="mb-3">
+                        <input type="text" class="form-control rounded-pill bg-light py-3" placeholder="Username" style="border: none;">
+                    </div>
+                    <div class="mb-4">
+                        <input type="password" class="form-control rounded-pill bg-light py-3" placeholder="Password" style="border: none;">
+                    </div>
+                    
+                    <!-- Sign In Button -->
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-success rounded-pill py-3 fw-bold" style="background: linear-gradient(135deg, #28a745, #20c997); border: none;">Sign in</button>
+                    </div>
+                    
+                    <!-- Social Login Options -->
+                    <div class="text-center mb-4">
+                        <small class="text-muted">or signin with</small>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center gap-3 mb-4">
+                        <!-- Social Icons -->
+                        <a href="#" class="btn rounded-circle" style="width: 50px; height: 50px; background-color: #3b5998; display: flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-facebook-f text-white"></i>
+                        </a>
+                        <a href="#" class="btn rounded-circle" style="width: 50px; height: 50px; background-color: #dd4b39; display: flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-google text-white"></i>
+                        </a>
+                        <a href="#" class="btn rounded-circle" style="width: 50px; height: 50px; background-color: #0077b5; display: flex; align-items: center; justify-content: center;">
+                            <i class="fab fa-linkedin-in text-white"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- Signup Link -->
+                    <div class="text-center">
+                        <small>No account yet? <a href="#" class="text-success text-decoration-none fw-bold">Signup</a></small>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Right Side - Welcome Message -->
+        <div class="col-md-6 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #28a745, #8fd19e);">
+            <div class="text-white w-75 text-center">
+                <h1 class="display-5 fw-bold mb-4">Welcome back!</h1>
+                <p class="lead mb-5">We're so glad to see you again! Access your account to continue managing your inventory efficiently.</p>
+                <div class="mt-5">
+                    <a href="#" class="btn btn-light rounded-pill px-4 py-2 text-success fw-bold">No account yet? Signup</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4 mb-4">
-        <div class="card feature-card h-100">
-            <div class="card-body">
-                <h5 class="card-title">User Management</h5>
-                <p class="card-text">Create and view users in the PostgreSQL database.</p>
-                <a href="/users" class="btn btn-primary">Manage Users</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-4">
-        <div class="card feature-card h-100">
-            <div class="card-body">
-                <h5 class="card-title">Health Check</h5>
-                <p class="card-text">Check the status of the application and database connection.</p>
-                <a href="/health" class="btn btn-success">Check Health</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-4">
-        <div class="card feature-card h-100">
-            <div class="card-body">
-                <h5 class="card-title">API Documentation</h5>
-                <p class="card-text">Learn how to use the REST API endpoints.</p>
-                <a href="#" class="btn btn-info" onclick="showApiDocs()">View Docs</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="apiDocsModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">API Documentation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <h6>Endpoints:</h6>
-                <ul>
-                    <li><strong>GET /</strong> - Welcome message</li>
-                    <li><strong>GET /health</strong> - Health check</li>
-                    <li><strong>GET /users</strong> - Get all users</li>
-                    <li><strong>POST /users</strong> - Create a new user</li>
-                </ul>
-                <h6>Example POST request:</h6>
-                <pre>
-{
-    "name": "John Doe",
-    "email": "john@example.com"
-}
-                </pre>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Font Awesome for social icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 {% endblock %}
 
 {% block scripts %}
 <script>
-function showApiDocs() {
-    var myModal = new bootstrap.Modal(document.getElementById('apiDocsModal'));
-    myModal.show();
-}
+// No additional scripts needed for this static page
 </script>
 {% endblock %}
